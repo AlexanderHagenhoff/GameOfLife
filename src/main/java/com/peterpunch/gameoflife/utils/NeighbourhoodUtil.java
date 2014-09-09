@@ -23,7 +23,7 @@ public class NeighbourhoodUtil
         return count;
     }
 
-    public int getAmountOfLivindNeighbours(Field field, Position position)
+    public int getAmountOfLivingNeighbours(Field field, Position position)
     {
         int count = 0;
 

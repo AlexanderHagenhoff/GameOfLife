@@ -19,10 +19,9 @@ public class Rule34_3 implements Rule
     {
         Cell cell = field.getCell(position);
 
-        int deadCells = neighbourhoodUtil.getAmountOfLivindNeighbours(field, position);
-        int livingCells = neighbourhoodUtil.getAmountOfLivindNeighbours(field, position);
+        int livingCells = neighbourhoodUtil.getAmountOfLivingNeighbours(field, position);
 
-        if (!cell.isAlive() && deadCells == 3) {
+        if (!cell.isAlive() && livingCells == 3) {
             cell.revive();
 
             return field;

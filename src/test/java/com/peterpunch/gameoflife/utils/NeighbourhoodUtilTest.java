@@ -50,7 +50,7 @@ public class NeighbourhoodUtilTest
         File file = new File(getClass().getResource("/10x10_alive.txt").getFile());
         Field field = new FieldCreator().create(file);
 
-        int amount = util.getAmountOfLivindNeighbours(field, new Position(4, 4));
+        int amount = util.getAmountOfLivingNeighbours(field, new Position(4, 4));
 
         assertEquals(8, amount);
     }
@@ -61,7 +61,7 @@ public class NeighbourhoodUtilTest
         File file = new File(getClass().getResource("/10x10_alive.txt").getFile());
         Field field = new FieldCreator().create(file);
 
-        int amount = util.getAmountOfLivindNeighbours(field, new Position(0, 0));
+        int amount = util.getAmountOfLivingNeighbours(field, new Position(0, 0));
 
         assertEquals(8, amount);
     }
@@ -83,7 +83,7 @@ public class NeighbourhoodUtilTest
         File file = new File(getClass().getResource("/3x3_001.txt").getFile());
         Field field = new FieldCreator().create(file);
 
-        int amount = util.getAmountOfLivindNeighbours(field, new Position(1, 1));
+        int amount = util.getAmountOfLivingNeighbours(field, new Position(1, 1));
 
         assertEquals(2, amount);
     }
