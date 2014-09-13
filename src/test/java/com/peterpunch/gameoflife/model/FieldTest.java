@@ -2,11 +2,14 @@ package com.peterpunch.gameoflife.model;
 
 import com.peterpunch.gameoflife.exception.FieldNotRectangularException;
 import com.peterpunch.gameoflife.utils.FieldCreator;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -15,23 +18,18 @@ public class FieldTest
 {
     private Field field;
 
-    @Test(expected = FieldNotRectangularException.class)
-    public void new_should_should_throw_field_not_valid_exception() throws Exception
-    {
-        Cell[][] cells = new Cell[2][];
-        cells[0] = new Cell[1];
-        cells[1] = new Cell[3];
+    private Map<Position, Cell> cells;
 
-        field = new Field(cells);
+    @Before
+    public void setUp() throws Exception
+    {
+        cells = new HashMap<Position, Cell>();
     }
 
     @Test
     public void new_should_create_field_with_correct_height() throws Exception
     {
-        Cell[][] cells = new Cell[2][1];
-        cells[0][0] = new Cell(true);
-
-        field = new Field(cells);
+        field = new Field(2, 2, cells);
 
         assertEquals(2, field.getHeight());
     }
@@ -39,10 +37,7 @@ public class FieldTest
     @Test
     public void new_should_create_field_with_correct_width() throws Exception
     {
-        Cell[][] cells = new Cell[2][1];
-        cells[0][0] = new Cell(true);
-
-        field = new Field(cells);
+        field = new Field(2, 1, cells);
 
         assertEquals(1, field.getWidth());
     }
@@ -50,18 +45,17 @@ public class FieldTest
     @Test
     public void get_cell_should_return_correct_cell() throws Exception
     {
-        Cell[][] cells = new Cell[2][2];
-        cells[0][0] = new Cell(true);
-        cells[0][1] = new Cell(true);
-        cells[1][0] = new Cell(true);
-        cells[1][1] = new Cell(true);
+        cells.put(new Position(0, 0), new Cell(true));
+        cells.put(new Position(0, 1), new Cell(true));
+        cells.put(new Position(1, 0), new Cell(true));
+        cells.put(new Position(1, 1), new Cell(true));
 
-        field = new Field(cells);
+        field = new Field(2, 2, cells);
 
-        for (int y = 0; y < cells.length; y++) {
-            for (int x = 0; x < cells[y].length; x++) {
+        for (int y = 0; y < 2; y++) {
+            for (int x = 0; x < 2; x++) {
                 Cell cell = field.getCell(new Position(y, x));
-                assertSame(cells[y][x], cell);
+                assertSame(cells.get(new Position(y, x)), cell);
             }
         }
     }
@@ -111,12 +105,12 @@ public class FieldTest
         FieldCreator fieldCreator = new FieldCreator();
         field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
 
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    Cell cell = field.getCell(new Position(i, j));
-                    cell.revive();
-                }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                Cell cell = field.getCell(new Position(i, j));
+                cell.revive();
             }
+        }
 
         field.commit();
 

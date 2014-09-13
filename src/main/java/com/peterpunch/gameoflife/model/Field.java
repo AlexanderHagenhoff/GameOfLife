@@ -1,47 +1,53 @@
 package com.peterpunch.gameoflife.model;
 
-import com.peterpunch.gameoflife.exception.FieldNotRectangularException;
-import com.peterpunch.gameoflife.validators.CellsFieldIsRectangularValidator;
+import java.util.Map;
 
 public class Field
 {
-    private static CellsFieldIsRectangularValidator validator = new CellsFieldIsRectangularValidator();
+    private int height;
 
-    private final Cell[][] cells;
+    private int width;
 
-    public Field(Cell[][] cells)
+    private Map<Position, Cell> cells;
+
+    public Field(int height, int width, Map<Position, Cell> cells)
     {
-        if (!validator.isValid(cells)) {
-            throw new FieldNotRectangularException();
-        }
-
+        this.height = height;
+        this.width = width;
         this.cells = cells;
     }
 
     public int getHeight()
     {
-        return cells.length;
+        return height;
     }
 
     public int getWidth()
     {
-        return cells[0].length;
+        return width;
     }
 
     public Cell getCell(Position position)
     {
         Position normalized = position.normalize(getHeight(), getWidth());
-        return cells[normalized.y][normalized.x];
+        Cell cell = cells.get(normalized);
+
+        if (cell == null) {
+            cell = new Cell(false);
+            cells.put(normalized, cell);
+        }
+
+        return cell;
     }
 
     public void commit()
     {
-        for (int i = 0; i < getHeight(); i++) {
-            for (int j = 0; j < getWidth(); j++) {
-                Cell cell = cells[i][j];
+        for (Position position : cells.keySet()) {
+            Cell cell = cells.get(position);
+
+            if (cell != null) {
                 cell.commit();
             }
         }
-
     }
 }

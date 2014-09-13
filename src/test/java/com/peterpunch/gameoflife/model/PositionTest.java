@@ -138,4 +138,28 @@ public class PositionTest
         assertEquals(0, normalized.y);
         assertEquals(1, normalized.x);
     }
+
+    @Test
+    public void equals_should_return_true() throws Exception
+    {
+        Position position = new Position(1, 1);
+
+        assertTrue(position.equals(new Position(1, 1)));
+    }
+
+    @Test
+    public void equals_should_return_true_on_same_object() throws Exception
+    {
+        Position position = new Position(1, 1);
+
+        assertTrue(position.equals(position));
+    }
+
+    @Test
+    public void equals_should_return_false() throws Exception
+    {
+        Position position = new Position(1, 1);
+
+        assertFalse(position.equals(new Position(1, 2)));
+    }
 }
