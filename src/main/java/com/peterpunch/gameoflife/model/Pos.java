@@ -17,6 +17,11 @@ public class Pos
         this.x = x;
     }
 
+    public Pos add(Pos toAdd)
+    {
+        return Pos.p(y + toAdd.y, x + toAdd.x);
+    }
+
     public Pos normalize(int height, int width)
     {
         return new Pos(normalizeSingle(height, y), normalizeSingle(width, x));

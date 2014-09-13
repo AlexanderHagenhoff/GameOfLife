@@ -21,7 +21,7 @@ public class GameOfLifeTest
     public void setUp() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        File file = new File(getClass().getResource("/drawing_file_geil.txt").getFile());
+        File file = new File(getClass().getResource("/drawing_file_oktagon.txt").getFile());
         Field field = fieldCreator.create(file);
 
         gameOfLife = new GameOfLife(field, new Rule23_3(), new ConsoleDrawer());

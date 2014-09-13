@@ -10,6 +10,36 @@ import static org.junit.Assert.*;
 public class PositionTest
 {
     @Test
+    public void add_should_add_correct_values() throws Exception
+    {
+        Pos pos = Pos.p(3, 1);
+
+        Pos result = pos.add(Pos.p(5, 3));
+
+        assertEquals(Pos.p(8, 4), result);
+    }
+
+    @Test
+    public void add_should_subtract_correct_values() throws Exception
+    {
+        Pos pos = Pos.p(3, 1);
+
+        Pos result = pos.add(Pos.p(-2, -3));
+
+        assertEquals(Pos.p(1, -2), result);
+    }
+
+    @Test
+    public void add_should_add_and_subtract_correct_values() throws Exception
+    {
+        Pos pos = Pos.p(3, 1);
+
+        Pos result = pos.add(Pos.p(2, -3));
+
+        assertEquals(Pos.p(5, -2), result);
+    }
+
+    @Test
     public void normalize_should_do_nothing() throws Exception
     {
         int width = 3;

@@ -8,6 +8,7 @@ public class ConsoleDrawer implements Drawer
     @Override
     public void drawField(final Field field)
     {
+        printStats(field);
         drawHeader(field);
 
         for (int y = 0; y < field.getHeight(); y++) {
@@ -26,6 +27,11 @@ public class ConsoleDrawer implements Drawer
         System.out.println("\n");
     }
 
+    private void printStats(Field field)
+    {
+        System.out.println("size: " + field.getLivingPositions().size());
+    }
+
     private void drawHeader(Field field)
     {
         System.out.print(" ");
@@ -37,7 +43,7 @@ public class ConsoleDrawer implements Drawer
 
     private void drawCell(boolean alive)
     {
-        String icon = alive ? " @ " : "   ";
+        String icon = alive ? " 0 " : "   ";
         System.out.print(icon);
     }
 }
