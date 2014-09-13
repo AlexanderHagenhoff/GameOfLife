@@ -1,15 +1,13 @@
 package com.peterpunch.gameoflife.drawer;
 
-import com.peterpunch.gameoflife.model.Cell;
 import com.peterpunch.gameoflife.model.Field;
-import com.peterpunch.gameoflife.model.Position;
+import com.peterpunch.gameoflife.model.Pos;
 
 public class ConsoleDrawer implements Drawer
 {
-    @Override
-    public void drawCell(Cell cell)
+    public void drawCell(boolean alive)
     {
-        String icon = cell.isAlive() ? " @ " : "   ";
+        String icon = alive ? " @ " : "   ";
         System.out.print(icon);
     }
 
@@ -23,7 +21,8 @@ public class ConsoleDrawer implements Drawer
             System.out.print("|");
 
             for (int x = 0; x < field.getWidth(); x++) {
-                drawCell(field.getCell(new Position(y, x)));
+                Pos pos = Pos.p(y, x);
+                drawCell(field.isAlive(pos));
             }
 
             System.out.println("|");

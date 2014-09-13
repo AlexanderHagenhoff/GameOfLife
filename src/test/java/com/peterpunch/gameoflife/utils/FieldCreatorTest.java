@@ -1,7 +1,7 @@
 package com.peterpunch.gameoflife.utils;
 
 import com.peterpunch.gameoflife.model.Field;
-import com.peterpunch.gameoflife.model.Position;
+import com.peterpunch.gameoflife.model.Pos;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +61,7 @@ public class FieldCreatorTest
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                boolean cell = field.getCell(new Position(i, j)).isAlive();
+                boolean cell = field.isAlive(Pos.p(i, j));
 
                 if (j != 1) {
                     assertFalse(cell);
@@ -79,7 +79,7 @@ public class FieldCreatorTest
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                boolean cell = field.getCell(new Position(i, j)).isAlive();
+                boolean cell = field.isAlive(Pos.p(i, j));
 
                 if (j != 1 && j != 6) {
                     assertFalse(cell);

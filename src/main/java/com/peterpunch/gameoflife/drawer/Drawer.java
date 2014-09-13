@@ -5,7 +5,5 @@ import com.peterpunch.gameoflife.model.Field;
 
 public interface Drawer
 {
-    public void drawCell(Cell cell);
-
     public void drawField(Field field);
 }

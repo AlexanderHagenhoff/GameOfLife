@@ -2,7 +2,7 @@ package com.peterpunch.gameoflife.controller;
 
 import com.peterpunch.gameoflife.drawer.Drawer;
 import com.peterpunch.gameoflife.model.Field;
-import com.peterpunch.gameoflife.model.Position;
+import com.peterpunch.gameoflife.model.Pos;
 import com.peterpunch.gameoflife.rulestrategy.Rule;
 
 public class GameOfLife implements Runnable
@@ -34,7 +34,7 @@ public class GameOfLife implements Runnable
 
                 for (int i = 0; i < field.getHeight(); i++) {
                     for (int j = 0; j < field.getWidth(); j++) {
-                        rule.apply(field, new Position(i, j));
+                        rule.apply(field, Pos.p(i, j));
                     }
                 }
 

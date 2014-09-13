@@ -1,83 +1,65 @@
 package com.peterpunch.gameoflife.utils;
 
 import com.peterpunch.gameoflife.model.Field;
-import com.peterpunch.gameoflife.model.Position;
+import com.peterpunch.gameoflife.model.Pos;
 
 public class NeighbourhoodUtil
 {
-    public int getAmountOfDeadNeighbours(Field field, Position position)
+    public int getAmountOfLivingNeighbours(Field field, Pos pos)
     {
         int count = 0;
 
-        count += !field.getCell(getLeftAbove(position)).isAlive() ? 1 : 0;
-        count += !field.getCell(getAbove(position)).isAlive() ? 1 : 0;
-        count += !field.getCell(getRightAbove(position)).isAlive() ? 1 : 0;
+        count += field.isAlive(getLeftAbove(pos)) ? 1 : 0;
+        count += field.isAlive(getAbove(pos)) ? 1 : 0;
+        count += field.isAlive(getRightAbove(pos)) ? 1 : 0;
 
-        count += !field.getCell(getLeft(position)).isAlive() ? 1 : 0;
-        count += !field.getCell(getRight(position)).isAlive() ? 1 : 0;
+        count += field.isAlive(getLeft(pos)) ? 1 : 0;
+        count += field.isAlive(getRight(pos)) ? 1 : 0;
 
-        count += !field.getCell(getLeftUnder(position)).isAlive() ? 1 : 0;
-        count += !field.getCell(getUnder(position)).isAlive() ? 1 : 0;
-        count += !field.getCell(getRightUnder(position)).isAlive() ? 1 : 0;
+        count += field.isAlive(getLeftUnder(pos)) ? 1 : 0;
+        count += field.isAlive(getUnder(pos)) ? 1 : 0;
+        count += field.isAlive(getRightUnder(pos)) ? 1 : 0;
 
         return count;
     }
 
-    public int getAmountOfLivingNeighbours(Field field, Position position)
+    private Pos getLeftAbove(Pos pos)
     {
-        int count = 0;
-
-        count += field.getCell(getLeftAbove(position)).isAlive() ? 1 : 0;
-        count += field.getCell(getAbove(position)).isAlive() ? 1 : 0;
-        count += field.getCell(getRightAbove(position)).isAlive() ? 1 : 0;
-
-        count += field.getCell(getLeft(position)).isAlive() ? 1 : 0;
-        count += field.getCell(getRight(position)).isAlive() ? 1 : 0;
-
-        count += field.getCell(getLeftUnder(position)).isAlive() ? 1 : 0;
-        count += field.getCell(getUnder(position)).isAlive() ? 1 : 0;
-        count += field.getCell(getRightUnder(position)).isAlive() ? 1 : 0;
-
-        return count;
+        return Pos.p(pos.y - 1, pos.x - 1);
     }
 
-    private Position getLeftAbove(Position position)
+    private Pos getAbove(Pos pos)
     {
-        return new Position(position.y - 1, position.x - 1);
+        return Pos.p(pos.y - 1, pos.x);
     }
 
-    private Position getAbove(Position position)
+    private Pos getRightAbove(Pos pos)
     {
-        return new Position(position.y - 1, position.x);
+        return Pos.p(pos.y - 1, pos.x + 1);
     }
 
-    private Position getRightAbove(Position position)
+    private Pos getLeft(Pos pos)
     {
-        return new Position(position.y - 1, position.x + 1);
+        return Pos.p(pos.y, pos.x - 1);
     }
 
-    private Position getLeft(Position position)
+    private Pos getRight(Pos pos)
     {
-        return new Position(position.y, position.x - 1);
+        return Pos.p(pos.y, pos.x + 1);
     }
 
-    private Position getRight(Position position)
+    private Pos getLeftUnder(Pos pos)
     {
-        return new Position(position.y, position.x + 1);
+        return Pos.p(pos.y + 1, pos.x - 1);
     }
 
-    private Position getLeftUnder(Position position)
+    private Pos getUnder(Pos pos)
     {
-        return new Position(position.y + 1, position.x - 1);
+        return Pos.p(pos.y + 1, pos.x);
     }
 
-    private Position getUnder(Position position)
+    private Pos getRightUnder(Pos pos)
     {
-        return new Position(position.y + 1, position.x);
-    }
-
-    private Position getRightUnder(Position position)
-    {
-        return new Position(position.y + 1, position.x + 1);
+        return Pos.p(pos.y + 1, pos.x + 1);
     }
 }

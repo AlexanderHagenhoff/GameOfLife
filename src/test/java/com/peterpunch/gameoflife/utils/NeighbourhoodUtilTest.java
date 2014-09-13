@@ -1,7 +1,7 @@
 package com.peterpunch.gameoflife.utils;
 
 import com.peterpunch.gameoflife.model.Field;
-import com.peterpunch.gameoflife.model.Position;
+import com.peterpunch.gameoflife.model.Pos;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,34 +23,12 @@ public class NeighbourhoodUtilTest
     }
 
     @Test
-    public void getAmountOfDeadNeighbours_should_return_8() throws Exception
-    {
-        File file = new File(getClass().getResource("/10x10_dead.txt").getFile());
-        Field field = new FieldCreator().create(file);
-
-        int amount = util.getAmountOfDeadNeighbours(field, new Position(4, 4));
-
-        assertEquals(8, amount);
-    }
-
-    @Test
-    public void getAmountOfDeadNeighbours_should_return_8_on_edge() throws Exception
-    {
-        File file = new File(getClass().getResource("/10x10_dead.txt").getFile());
-        Field field = new FieldCreator().create(file);
-
-        int amount = util.getAmountOfDeadNeighbours(field, new Position(0, 0));
-
-        assertEquals(8, amount);
-    }
-
-    @Test
     public void getAmountOfLivindNeighbours_should_return_8() throws Exception
     {
         File file = new File(getClass().getResource("/10x10_alive.txt").getFile());
         Field field = new FieldCreator().create(file);
 
-        int amount = util.getAmountOfLivingNeighbours(field, new Position(4, 4));
+        int amount = util.getAmountOfLivingNeighbours(field, Pos.p(4, 4));
 
         assertEquals(8, amount);
     }
@@ -61,20 +39,9 @@ public class NeighbourhoodUtilTest
         File file = new File(getClass().getResource("/10x10_alive.txt").getFile());
         Field field = new FieldCreator().create(file);
 
-        int amount = util.getAmountOfLivingNeighbours(field, new Position(0, 0));
+        int amount = util.getAmountOfLivingNeighbours(field, Pos.p(0, 0));
 
         assertEquals(8, amount);
-    }
-
-    @Test
-    public void getAmountOfDeadNeighbours_should_return_6() throws Exception
-    {
-        File file = new File(getClass().getResource("/3x3_001.txt").getFile());
-        Field field = new FieldCreator().create(file);
-
-        int amount = util.getAmountOfDeadNeighbours(field, new Position(1, 1));
-
-        assertEquals(6, amount);
     }
 
     @Test
@@ -83,7 +50,7 @@ public class NeighbourhoodUtilTest
         File file = new File(getClass().getResource("/3x3_001.txt").getFile());
         Field field = new FieldCreator().create(file);
 
-        int amount = util.getAmountOfLivingNeighbours(field, new Position(1, 1));
+        int amount = util.getAmountOfLivingNeighbours(field, Pos.p(1, 1));
 
         assertEquals(2, amount);
     }

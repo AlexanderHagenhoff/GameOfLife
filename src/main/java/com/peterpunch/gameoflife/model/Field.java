@@ -1,5 +1,8 @@
 package com.peterpunch.gameoflife.model;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
+
 import java.util.Map;
 
 public class Field
@@ -8,13 +11,20 @@ public class Field
 
     private int width;
 
-    private Map<Position, Cell> cells;
+    private Map<Pos, Cell> cells;
 
-    public Field(int height, int width, Map<Position, Cell> cells)
+    private Maps.EntryTransformer<Pos, Cell, Cell> commitTransfomer;
+
+    private Predicate<Map.Entry<Pos, Cell>> isCellAlivePredicate;
+
+    public Field(int height, int width, Map<Pos, Cell> cells)
     {
         this.height = height;
         this.width = width;
         this.cells = cells;
+
+        commitTransfomer = new CommitTransformer();
+        isCellAlivePredicate = new IsAlivePredicate();
     }
 
     public int getHeight()
@@ -27,27 +37,68 @@ public class Field
         return width;
     }
 
-    public Cell getCell(Position position)
+    public boolean isAlive(Pos pos)
     {
-        Position normalized = position.normalize(getHeight(), getWidth());
-        Cell cell = cells.get(normalized);
+        Cell cell = getCell(pos);
+
+        return cell != null && cell.isAlive();
+    }
+
+    public void revive(Pos pos)
+    {
+        Cell cell = getCell(pos);
 
         if (cell == null) {
+            Pos normalized = pos.normalize(getHeight(), getWidth());
             cell = new Cell(false);
             cells.put(normalized, cell);
         }
 
-        return cell;
+        cell.revive();
+    }
+
+    public void kill(Pos pos)
+    {
+        Cell cell = getCell(pos);
+
+        if (cell == null) {
+            return;
+        }
+
+        cell.kill();
     }
 
     public void commit()
     {
-        for (Position position : cells.keySet()) {
-            Cell cell = cells.get(position);
+        Map<Pos, Cell> tmp = Maps.transformEntries(cells, commitTransfomer);
+        cells = Maps.newHashMap(Maps.filterEntries(tmp, isCellAlivePredicate));
+    }
 
-            if (cell != null) {
-                cell.commit();
-            }
+
+    private Cell getCell(Pos pos)
+    {
+        Pos normalized = pos.normalize(getHeight(), getWidth());
+
+        return cells.get(normalized);
+    }
+
+    private class CommitTransformer implements Maps.EntryTransformer<Pos, Cell, Cell>
+    {
+        @Override
+        public Cell transformEntry(Pos key, Cell cell)
+        {
+            cell.commit();
+
+            return cell;
+        }
+    }
+
+    private class IsAlivePredicate implements Predicate<Map.Entry<Pos, Cell>>
+    {
+        @Override
+        public boolean apply(Map.Entry<Pos, Cell> input)
+        {
+            return input.getValue().isAlive();
         }
     }
 }

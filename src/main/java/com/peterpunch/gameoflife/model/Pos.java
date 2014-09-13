@@ -1,20 +1,25 @@
 package com.peterpunch.gameoflife.model;
 
-public class Position
+public class Pos
 {
     public int y = 0;
 
     public int x = 0;
 
-    public Position(int y, int x)
+    public static Pos p(int y, int x)
+    {
+        return new Pos(y, x);
+    }
+
+    private Pos(int y, int x)
     {
         this.y = y;
         this.x = x;
     }
 
-    public Position normalize(int height, int width)
+    public Pos normalize(int height, int width)
     {
-        return new Position(normalizeSingle(height, y), normalizeSingle(width, x));
+        return new Pos(normalizeSingle(height, y), normalizeSingle(width, x));
     }
 
     private int normalizeSingle(int size, int position)
@@ -37,10 +42,10 @@ public class Position
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Position position = (Position) o;
+        Pos pos = (Pos) o;
 
-        if (x != position.x) return false;
-        if (y != position.y) return false;
+        if (x != pos.x) return false;
+        if (y != pos.y) return false;
 
         return true;
     }

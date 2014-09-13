@@ -1,6 +1,5 @@
 package com.peterpunch.gameoflife.model;
 
-import com.peterpunch.gameoflife.exception.FieldNotRectangularException;
 import com.peterpunch.gameoflife.utils.FieldCreator;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +17,12 @@ public class FieldTest
 {
     private Field field;
 
-    private Map<Position, Cell> cells;
+    private Map<Pos, Cell> cells;
 
     @Before
     public void setUp() throws Exception
     {
-        cells = new HashMap<Position, Cell>();
+        cells = new HashMap<Pos, Cell>();
     }
 
     @Test
@@ -43,60 +42,69 @@ public class FieldTest
     }
 
     @Test
-    public void get_cell_should_return_correct_cell() throws Exception
+    public void is_alive_should_return_true() throws Exception
     {
-        cells.put(new Position(0, 0), new Cell(true));
-        cells.put(new Position(0, 1), new Cell(true));
-        cells.put(new Position(1, 0), new Cell(true));
-        cells.put(new Position(1, 1), new Cell(true));
+        FieldCreator fieldCreator = new FieldCreator();
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
 
-        field = new Field(2, 2, cells);
-
-        for (int y = 0; y < 2; y++) {
-            for (int x = 0; x < 2; x++) {
-                Cell cell = field.getCell(new Position(y, x));
-                assertSame(cells.get(new Position(y, x)), cell);
-            }
-        }
+        assertTrue(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_x() throws Exception
+    public void is_alive_should_return_false() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
 
-        assertEquals(field.getCell(new Position(0, 2)), field.getCell(new Position(0, -1)));
-
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_y() throws Exception
+    public void kill_should_kill_correct_cell() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
 
-        assertEquals(field.getCell(new Position(2, 0)), field.getCell(new Position(-1, 0)));
+        field.kill(Pos.p(1, 1));
+        field.commit();
 
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_2_x() throws Exception
+    public void kill_should_let_cell_dead() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
 
-        assertEquals(field.getCell(new Position(0, 1)), field.getCell(new Position(0, -2)));
+        field.kill(Pos.p(1, 1));
+        field.commit();
 
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_2_y() throws Exception
+    public void revive_should_revive_correct_cell() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
 
-        assertEquals(field.getCell(new Position(1, 0)), field.getCell(new Position(-2, 0)));
+        field.revive(Pos.p(1, 1));
+        field.commit();
+
+        assertTrue(field.isAlive(Pos.p(1, 1)));
+    }
+
+    @Test
+    public void revive_should_leave_cell_alive() throws Exception
+    {
+        FieldCreator fieldCreator = new FieldCreator();
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
+
+        field.revive(Pos.p(1, 1));
+        field.commit();
+
+        assertTrue(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
@@ -107,8 +115,7 @@ public class FieldTest
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Cell cell = field.getCell(new Position(i, j));
-                cell.revive();
+                field.revive(Pos.p(i, j));
             }
         }
 
@@ -116,10 +123,8 @@ public class FieldTest
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Cell cell = field.getCell(new Position(i, j));
-                assertTrue(cell.isAlive());
+                assertTrue(field.isAlive(Pos.p(i, j)));
             }
         }
-
     }
 }

@@ -14,9 +14,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(0, 0);
+        Pos pos = Pos.p(0, 0);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(0, normalized.y);
         assertEquals(0, normalized.x);
@@ -27,9 +27,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(1, 2);
+        Pos pos = Pos.p(1, 2);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(1, normalized.y);
         assertEquals(2, normalized.x);
@@ -40,9 +40,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(3, 0);
+        Pos pos = Pos.p(3, 0);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(0, normalized.y);
         assertEquals(0, normalized.x);
@@ -53,9 +53,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(0, 3);
+        Pos pos = Pos.p(0, 3);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(0, normalized.y);
         assertEquals(0, normalized.x);
@@ -66,9 +66,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(4, 0);
+        Pos pos = Pos.p(4, 0);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(1, normalized.y);
         assertEquals(0, normalized.x);
@@ -79,9 +79,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(0, 4);
+        Pos pos = Pos.p(0, 4);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(0, normalized.y);
         assertEquals(1, normalized.x);
@@ -92,9 +92,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(0, -1);
+        Pos pos = Pos.p(0, -1);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(0, normalized.y);
         assertEquals(2, normalized.x);
@@ -105,9 +105,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(-1, 0);
+        Pos pos = Pos.p(-1, 0);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(2, normalized.y);
         assertEquals(0, normalized.x);
@@ -118,9 +118,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(-2, 0);
+        Pos pos = Pos.p(-2, 0);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(1, normalized.y);
         assertEquals(0, normalized.x);
@@ -131,9 +131,9 @@ public class PositionTest
     {
         int width = 3;
         int height = 3;
-        Position position = new Position(0, -2);
+        Pos pos = Pos.p(0, -2);
 
-        Position normalized = position.normalize(height, width);
+        Pos normalized = pos.normalize(height, width);
 
         assertEquals(0, normalized.y);
         assertEquals(1, normalized.x);
@@ -142,24 +142,24 @@ public class PositionTest
     @Test
     public void equals_should_return_true() throws Exception
     {
-        Position position = new Position(1, 1);
+        Pos pos = Pos.p(1, 1);
 
-        assertTrue(position.equals(new Position(1, 1)));
+        assertTrue(pos.equals(Pos.p(1, 1)));
     }
 
     @Test
     public void equals_should_return_true_on_same_object() throws Exception
     {
-        Position position = new Position(1, 1);
+        Pos pos = Pos.p(1, 1);
 
-        assertTrue(position.equals(position));
+        assertTrue(pos.equals(pos));
     }
 
     @Test
     public void equals_should_return_false() throws Exception
     {
-        Position position = new Position(1, 1);
+        Pos pos = Pos.p(1, 1);
 
-        assertFalse(position.equals(new Position(1, 2)));
+        assertFalse(pos.equals(Pos.p(1, 2)));
     }
 }
