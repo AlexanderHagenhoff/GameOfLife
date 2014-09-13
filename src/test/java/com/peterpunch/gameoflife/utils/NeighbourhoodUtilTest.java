@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.File;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -53,5 +54,13 @@ public class NeighbourhoodUtilTest
         int amount = util.getAmountOfLivingNeighbours(field, Pos.p(1, 1));
 
         assertEquals(2, amount);
+    }
+
+    @Test
+    public void get_neighbourhood_positions_should_return_correct_positions() throws Exception
+    {
+        final List<Pos> positions = util.getNeighbourhoodPositions(Pos.p(1, 1));
+
+        assertEquals(8, positions.size());
     }
 }

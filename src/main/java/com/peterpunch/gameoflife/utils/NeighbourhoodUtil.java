@@ -1,7 +1,10 @@
 package com.peterpunch.gameoflife.utils;
 
+import com.google.common.collect.Lists;
 import com.peterpunch.gameoflife.model.Field;
 import com.peterpunch.gameoflife.model.Pos;
+
+import java.util.List;
 
 public class NeighbourhoodUtil
 {
@@ -21,6 +24,21 @@ public class NeighbourhoodUtil
         count += field.isAlive(getRightUnder(pos)) ? 1 : 0;
 
         return count;
+    }
+
+    public List<Pos> getNeighbourhoodPositions(Pos pos)
+    {
+        List<Pos> positions = Lists.newArrayList();
+        positions.add(getLeftAbove(pos));
+        positions.add(getAbove(pos));
+        positions.add(getRightAbove(pos));
+        positions.add(getLeft(pos));
+        positions.add(getRight(pos));
+        positions.add(getLeftUnder(pos));
+        positions.add(getUnder(pos));
+        positions.add(getRightUnder(pos));
+
+        return positions;
     }
 
     private Pos getLeftAbove(Pos pos)

@@ -2,8 +2,10 @@ package com.peterpunch.gameoflife.model;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import java.util.Map;
+import java.util.Set;
 
 public class Field
 {
@@ -13,7 +15,7 @@ public class Field
 
     private Map<Pos, Cell> cells;
 
-    private Maps.EntryTransformer<Pos, Cell, Cell> commitTransfomer;
+    private Maps.EntryTransformer<Pos, Cell, Cell> commitTransformer;
 
     private Predicate<Map.Entry<Pos, Cell>> isCellAlivePredicate;
 
@@ -23,18 +25,8 @@ public class Field
         this.width = width;
         this.cells = cells;
 
-        commitTransfomer = new CommitTransformer();
+        commitTransformer = new CommitTransformer();
         isCellAlivePredicate = new IsAlivePredicate();
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public int getWidth()
-    {
-        return width;
     }
 
     public boolean isAlive(Pos pos)
@@ -49,9 +41,7 @@ public class Field
         Cell cell = getCell(pos);
 
         if (cell == null) {
-            Pos normalized = pos.normalize(getHeight(), getWidth());
-            cell = new Cell(false);
-            cells.put(normalized, cell);
+            cell = createDeadCellAt(pos);
         }
 
         cell.revive();
@@ -70,16 +60,39 @@ public class Field
 
     public void commit()
     {
-        Map<Pos, Cell> tmp = Maps.transformEntries(cells, commitTransfomer);
+        Map<Pos, Cell> tmp = Maps.transformEntries(cells, commitTransformer);
         cells = Maps.newHashMap(Maps.filterEntries(tmp, isCellAlivePredicate));
     }
 
+    public Set<Pos> getLivingPositions()
+    {
+        return Sets.newHashSet(Maps.filterEntries(cells, isCellAlivePredicate).keySet());
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
 
     private Cell getCell(Pos pos)
     {
         Pos normalized = pos.normalize(getHeight(), getWidth());
 
         return cells.get(normalized);
+    }
+
+    private Cell createDeadCellAt(Pos pos)
+    {
+        Pos normalized = pos.normalize(getHeight(), getWidth());
+        Cell cell = new Cell(false);
+        cells.put(normalized, cell);
+
+        return cell;
     }
 
     private class CommitTransformer implements Maps.EntryTransformer<Pos, Cell, Cell>

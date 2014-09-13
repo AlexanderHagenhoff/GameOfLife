@@ -45,7 +45,6 @@ public class FieldCreator
             y++;
         }
 
-
         dto.cells = cells;
         dto.height = y;
 

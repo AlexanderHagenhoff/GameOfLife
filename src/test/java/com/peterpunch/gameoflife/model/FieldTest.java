@@ -64,6 +64,7 @@ public class FieldTest
     {
         FieldCreator fieldCreator = new FieldCreator();
         field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
+        assertTrue(field.isAlive(Pos.p(1, 1)));
 
         field.kill(Pos.p(1, 1));
         field.commit();
@@ -76,6 +77,7 @@ public class FieldTest
     {
         FieldCreator fieldCreator = new FieldCreator();
         field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
+        assertFalse(field.isAlive(Pos.p(1, 1)));
 
         field.kill(Pos.p(1, 1));
         field.commit();
@@ -88,6 +90,7 @@ public class FieldTest
     {
         FieldCreator fieldCreator = new FieldCreator();
         field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
+        assertFalse(field.isAlive(Pos.p(1, 1)));
 
         field.revive(Pos.p(1, 1));
         field.commit();
@@ -100,6 +103,7 @@ public class FieldTest
     {
         FieldCreator fieldCreator = new FieldCreator();
         field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
+        assertTrue(field.isAlive(Pos.p(1, 1)));
 
         field.revive(Pos.p(1, 1));
         field.commit();

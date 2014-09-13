@@ -5,12 +5,6 @@ import com.peterpunch.gameoflife.model.Pos;
 
 public class ConsoleDrawer implements Drawer
 {
-    public void drawCell(boolean alive)
-    {
-        String icon = alive ? " @ " : "   ";
-        System.out.print(icon);
-    }
-
     @Override
     public void drawField(final Field field)
     {
@@ -39,5 +33,11 @@ public class ConsoleDrawer implements Drawer
             System.out.print("---");
         }
         System.out.println(" ");
+    }
+
+    private void drawCell(boolean alive)
+    {
+        String icon = alive ? " @ " : "   ";
+        System.out.print(icon);
     }
 }

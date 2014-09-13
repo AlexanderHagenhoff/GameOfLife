@@ -4,6 +4,7 @@ import com.peterpunch.gameoflife.drawer.Drawer;
 import com.peterpunch.gameoflife.model.Field;
 import com.peterpunch.gameoflife.model.Pos;
 import com.peterpunch.gameoflife.rulestrategy.Rule;
+import com.peterpunch.gameoflife.utils.NeighbourhoodUtil;
 
 public class GameOfLife implements Runnable
 {
@@ -13,6 +14,8 @@ public class GameOfLife implements Runnable
 
     private final Drawer drawer;
 
+    private final NeighbourhoodUtil util;
+
     private boolean run = true;
 
     public GameOfLife(Field field, Rule rule, Drawer drawer)
@@ -20,6 +23,8 @@ public class GameOfLife implements Runnable
         this.field = field;
         this.rule = rule;
         this.drawer = drawer;
+
+        util = new NeighbourhoodUtil();
     }
 
     @Override
@@ -32,9 +37,10 @@ public class GameOfLife implements Runnable
 
                 Thread.sleep(150);
 
-                for (int i = 0; i < field.getHeight(); i++) {
-                    for (int j = 0; j < field.getWidth(); j++) {
-                        rule.apply(field, Pos.p(i, j));
+                for (Pos pos : field.getLivingPositions()) {
+                    rule.apply(field, pos);
+                    for (Pos neighbour : util.getNeighbourhoodPositions(pos)) {
+                        rule.apply(field, neighbour);
                     }
                 }
 
