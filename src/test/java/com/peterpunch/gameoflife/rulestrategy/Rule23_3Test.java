@@ -1,8 +1,7 @@
 package com.peterpunch.gameoflife.rulestrategy;
 
-import com.peterpunch.gameoflife.model.Cell;
 import com.peterpunch.gameoflife.model.Field;
-import com.peterpunch.gameoflife.model.Position;
+import com.peterpunch.gameoflife.model.Pos;
 import com.peterpunch.gameoflife.utils.FieldCreator;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,11 +31,10 @@ public class Rule23_3Test
     {
         Field field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
 
-        field = rule.apply(field, new Position(1, 1));
+        field = rule.apply(field, Pos.p(1, 1));
         field.commit();
 
-        Cell cell = field.getCell(new Position(1, 1));
-        assertFalse(cell.isAlive());
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
@@ -44,11 +42,10 @@ public class Rule23_3Test
     {
         Field field = fieldCreator.create(new File(getClass().getResource("/3x3_rule_1.txt").getFile()));
 
-        field = rule.apply(field, new Position(1, 1));
+        field = rule.apply(field, Pos.p(1, 1));
         field.commit();
 
-        Cell cell = field.getCell(new Position(1, 1));
-        assertTrue(cell.isAlive());
+        assertTrue(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
@@ -56,11 +53,10 @@ public class Rule23_3Test
     {
         Field field = fieldCreator.create(new File(getClass().getResource("/3x3_rule_2.txt").getFile()));
 
-        field = rule.apply(field, new Position(1, 1));
+        field = rule.apply(field, Pos.p(1, 1));
         field.commit();
 
-        Cell cell = field.getCell(new Position(1, 1));
-        assertFalse(cell.isAlive());
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
@@ -68,11 +64,10 @@ public class Rule23_3Test
     {
         Field field = fieldCreator.create(new File(getClass().getResource("/3x3_rule_3.txt").getFile()));
 
-        field = rule.apply(field, new Position(1, 1));
+        field = rule.apply(field, Pos.p(1, 1));
         field.commit();
 
-        Cell cell = field.getCell(new Position(1, 1));
-        assertTrue(cell.isAlive());
+        assertTrue(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
@@ -80,10 +75,9 @@ public class Rule23_3Test
     {
         Field field = fieldCreator.create(new File(getClass().getResource("/3x3_rule_4.txt").getFile()));
 
-        field = rule.apply(field, new Position(1, 1));
+        field = rule.apply(field, Pos.p(1, 1));
         field.commit();
 
-        Cell cell = field.getCell(new Position(1, 1));
-        assertFalse(cell.isAlive());
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 }

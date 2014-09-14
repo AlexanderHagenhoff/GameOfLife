@@ -1,8 +1,7 @@
 package com.peterpunch.gameoflife.rulestrategy;
 
-import com.peterpunch.gameoflife.model.Cell;
 import com.peterpunch.gameoflife.model.Field;
-import com.peterpunch.gameoflife.model.Position;
+import com.peterpunch.gameoflife.model.Pos;
 import com.peterpunch.gameoflife.utils.NeighbourhoodUtil;
 
 public class Rule34_3 implements Rule
@@ -15,22 +14,28 @@ public class Rule34_3 implements Rule
     }
 
     @Override
-    public Field apply(Field field, Position position)
+    public int hashCode()
     {
-        Cell cell = field.getCell(position);
+        return super.hashCode();
+    }
 
-        int livingCells = neighbourhoodUtil.getAmountOfLivingNeighbours(field, position);
+    @Override
+    public Field apply(Field field, Pos pos)
+    {
+        boolean alive = field.isAlive(pos);
+        int livingCells = neighbourhoodUtil.getAmountOfLivingNeighbours(field, pos);
 
-        if (!cell.isAlive() && livingCells == 3) {
-            cell.revive();
+        if (!alive && livingCells == 3) {
+            field.revive(pos);
 
             return field;
         }
 
-        if (livingCells != 4 && livingCells != 3) {
-            cell.kill();
+        if (alive && livingCells != 3 && livingCells != 4) {
+            field.kill(pos);
         }
 
         return field;
+
     }
 }

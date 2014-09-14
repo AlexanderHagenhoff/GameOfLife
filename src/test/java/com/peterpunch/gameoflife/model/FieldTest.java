@@ -1,12 +1,14 @@
 package com.peterpunch.gameoflife.model;
 
-import com.peterpunch.gameoflife.exception.FieldNotRectangularException;
 import com.peterpunch.gameoflife.utils.FieldCreator;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -15,23 +17,18 @@ public class FieldTest
 {
     private Field field;
 
-    @Test(expected = FieldNotRectangularException.class)
-    public void new_should_should_throw_field_not_valid_exception() throws Exception
-    {
-        Cell[][] cells = new Cell[2][];
-        cells[0] = new Cell[1];
-        cells[1] = new Cell[3];
+    private Map<Pos, Cell> cells;
 
-        field = new Field(cells);
+    @Before
+    public void setUp() throws Exception
+    {
+        cells = new HashMap<Pos, Cell>();
     }
 
     @Test
     public void new_should_create_field_with_correct_height() throws Exception
     {
-        Cell[][] cells = new Cell[2][1];
-        cells[0][0] = new Cell(true);
-
-        field = new Field(cells);
+        field = new Field(2, 2, cells);
 
         assertEquals(2, field.getHeight());
     }
@@ -39,70 +36,79 @@ public class FieldTest
     @Test
     public void new_should_create_field_with_correct_width() throws Exception
     {
-        Cell[][] cells = new Cell[2][1];
-        cells[0][0] = new Cell(true);
-
-        field = new Field(cells);
+        field = new Field(2, 1, cells);
 
         assertEquals(1, field.getWidth());
     }
 
     @Test
-    public void get_cell_should_return_correct_cell() throws Exception
+    public void is_alive_should_return_true() throws Exception
     {
-        Cell[][] cells = new Cell[2][2];
-        cells[0][0] = new Cell(true);
-        cells[0][1] = new Cell(true);
-        cells[1][0] = new Cell(true);
-        cells[1][1] = new Cell(true);
+        FieldCreator fieldCreator = new FieldCreator();
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
 
-        field = new Field(cells);
-
-        for (int y = 0; y < cells.length; y++) {
-            for (int x = 0; x < cells[y].length; x++) {
-                Cell cell = field.getCell(new Position(y, x));
-                assertSame(cells[y][x], cell);
-            }
-        }
+        assertTrue(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_x() throws Exception
+    public void is_alive_should_return_false() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
 
-        assertEquals(field.getCell(new Position(0, 2)), field.getCell(new Position(0, -1)));
-
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_y() throws Exception
+    public void kill_should_kill_correct_cell() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
+        assertTrue(field.isAlive(Pos.p(1, 1)));
 
-        assertEquals(field.getCell(new Position(2, 0)), field.getCell(new Position(-1, 0)));
+        field.kill(Pos.p(1, 1));
+        field.commit();
 
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_2_x() throws Exception
+    public void kill_should_let_cell_dead() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
+        assertFalse(field.isAlive(Pos.p(1, 1)));
 
-        assertEquals(field.getCell(new Position(0, 1)), field.getCell(new Position(0, -2)));
+        field.kill(Pos.p(1, 1));
+        field.commit();
 
+        assertFalse(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
-    public void get_cell_should_return_correct_cell_on_edge_2_y() throws Exception
+    public void revive_should_revive_correct_cell() throws Exception
     {
         FieldCreator fieldCreator = new FieldCreator();
-        field = fieldCreator.create(new File(getClass().getResource("/3x3_001.txt").getFile()));
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
+        assertFalse(field.isAlive(Pos.p(1, 1)));
 
-        assertEquals(field.getCell(new Position(1, 0)), field.getCell(new Position(-2, 0)));
+        field.revive(Pos.p(1, 1));
+        field.commit();
+
+        assertTrue(field.isAlive(Pos.p(1, 1)));
+    }
+
+    @Test
+    public void revive_should_leave_cell_alive() throws Exception
+    {
+        FieldCreator fieldCreator = new FieldCreator();
+        field = fieldCreator.create(new File(getClass().getResource("/3x3_alive_and_0.txt").getFile()));
+        assertTrue(field.isAlive(Pos.p(1, 1)));
+
+        field.revive(Pos.p(1, 1));
+        field.commit();
+
+        assertTrue(field.isAlive(Pos.p(1, 1)));
     }
 
     @Test
@@ -111,21 +117,18 @@ public class FieldTest
         FieldCreator fieldCreator = new FieldCreator();
         field = fieldCreator.create(new File(getClass().getResource("/3x3_dead.txt").getFile()));
 
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    Cell cell = field.getCell(new Position(i, j));
-                    cell.revive();
-                }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                field.revive(Pos.p(i, j));
             }
+        }
 
         field.commit();
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Cell cell = field.getCell(new Position(i, j));
-                assertTrue(cell.isAlive());
+                assertTrue(field.isAlive(Pos.p(i, j)));
             }
         }
-
     }
 }
